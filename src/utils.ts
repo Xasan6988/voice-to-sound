@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf'
 import dotenv from 'dotenv'
 
-import { rmdir, mkdir, access } from 'node:fs/promises';
+import { rm, mkdir, access } from 'node:fs/promises';
 
 import { NODE_ENV, UPLOAD_URL } from './consts'
 import { Utils } from './types'
@@ -41,7 +41,7 @@ export const checkAndRecreateUploadDir = async () => {
     const isNeedRecreateUploadFolder = await access(UPLOAD_URL).then(() => true).catch(() => false);
 
     if (isNeedRecreateUploadFolder) {
-      await rmdir(UPLOAD_URL, { recursive: true });
+      await rm(UPLOAD_URL, { recursive: true });
       console.log('Upload folder cleared')
     };
 
