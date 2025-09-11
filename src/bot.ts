@@ -1,6 +1,6 @@
 import ffmpeg from 'fluent-ffmpeg';
 
-import { writeFile, readFile } from 'node:fs/promises';
+import { writeFile, readFile, rm } from 'node:fs/promises';
 import { Buffer } from 'node:buffer';
 
 import { checkAndRecreateUploadDir, createBotWithToken, getFileName, setEnvMode } from './utils';
@@ -39,7 +39,8 @@ bot.on('voice', async ctx => {
 
     ctx.replyWithAudio({ source: mp3 })
 
-
+    await rm(ogaPath)
+    await rm(mp3Path)
   })
 
   // error handler

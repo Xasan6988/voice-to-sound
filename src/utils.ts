@@ -41,7 +41,7 @@ export const checkAndRecreateUploadDir = async () => {
     const isNeedRecreateUploadFolder = await access(UPLOAD_URL).then(() => true).catch(() => false);
 
     if (isNeedRecreateUploadFolder) {
-      await rmdir(UPLOAD_URL)
+      await rmdir(UPLOAD_URL, { recursive: true });
       console.log('Upload folder cleared')
     };
 
