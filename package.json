@@ -4,6 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build:db": "bash ./bash/buildDB.bash",
+    "run:db:dev": "cross-env NODE_ENV=development bash ./bash/runDB.bash",
+    "run:db:prod": "cross-env NODE_ENV=production bash ./bash/runDB.bash",
     "test": "jest",
     "prebuild": "rm -rf ./dist",
     "build": "tsc",
