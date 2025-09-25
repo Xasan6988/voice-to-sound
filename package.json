@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "migrate:dev": "dotenv -e .development.env npx prisma migrate dev",
     "build:db": "bash ./bash/buildDB.bash",
     "run:db:dev": "cross-env NODE_ENV=development bash ./bash/runDB.bash",
     "run:db:prod": "cross-env NODE_ENV=production bash ./bash/runDB.bash",
