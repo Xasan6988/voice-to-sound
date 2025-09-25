@@ -11,3 +11,8 @@ dist
 uploads
 
 .idea
+
+/prisma/migrations/dev.db
+/prisma/migrations/dev.db-journal
+/prisma/*.db
+/prisma/*.db-journal
