@@ -30,6 +30,49 @@ bot.on('voice', async ctx => {
     const fileLink = await bot.telegram.getFileLink(fileId);
     const file = await fetch(fileLink)
 
+
+    const telegramId = String(ctx.message?.from?.id);
+    const name = ctx.update.message.voice.file_unique_id;
+    const duration = ctx.update.message.voice.duration;
+
+    // transaction with create file and update user
+    await prisma.$transaction(async (tx) => {
+        try {
+            // Проверяем пользователя
+            const user = await tx.user.findUnique({
+                where: {telegramId}
+            })
+
+            if (!user) {
+                throw new Error('User not found')
+            }
+
+            // Создаем файл
+            const file = await tx.file.create({
+                data: {
+                    name,
+                    duration,
+                    userTelegramId: telegramId
+                },
+                include: {
+                    user: true
+                }
+            })
+
+            // Обновляем счетчик файлов у пользователя
+            await tx.user.update({
+                where: {telegramId},
+                data: {
+                    transactCount: {increment: 1}
+                }
+            })
+
+            return file
+        } catch (e) {
+            console.log(`Errors with DB transaction: ${e}`)
+        }
+    })
+
     const ogaPath = getFileName({fileExt: FILE_EXTENSIONS.oga, fileId})
     const mp3Path = getFileName({
         fileExt: FILE_EXTENSIONS.mp3, fileId
