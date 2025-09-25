@@ -4,7 +4,8 @@ import {access, mkdir, rm} from 'node:fs/promises';
 
 import {NODE_ENV, UPLOAD_URL} from './consts'
 import {Utils} from './types'
-import dotenv from "dotenv";
+import {config} from "dotenv";
+import {expand} from "dotenv-expand";
 
 export const getFileName = ({fileExt, fileId}: Utils.IGetFileNameArgs): string => `${UPLOAD_URL}/${fileId}.${fileExt}`
 
@@ -12,14 +13,14 @@ export const getFileName = ({fileExt, fileId}: Utils.IGetFileNameArgs): string =
 export const setEnvMode = () => {
     switch (process.env.NODE_ENV) {
         case NODE_ENV.PROD:
-            dotenv.config({
+            expand(config({
                 path: './.production.env',
-            })
+            }))
             break;
         default:
-            dotenv.config({
+            expand(config({
                 path: './.development.env',
-            })
+            }))
     }
 }
 

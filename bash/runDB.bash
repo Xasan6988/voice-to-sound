@@ -13,7 +13,7 @@ fi
 export $(cat $PATH_TO_ENV_FILE | grep -v ^# | xargs) >/dev/null
 
 # Check if POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DB are set
-if [ -z "$POSTGRES_USER" ] || [ -z "$POSTGRES_PASSWORD" ] || [ -z "$POSTGRES_DB" ]; then
+if [ -z "$POSTGRES_USER" ] || [ -z "$POSTGRES_PASSWORD" ] || [ -z "$POSTGRES_DB" ] || [ -z "$DATABASE_URL" ]; then
   echo "POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DB must be set"
   exit 1
 fi
