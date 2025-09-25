@@ -1,10 +1,15 @@
 import ffmpeg from 'fluent-ffmpeg';
 
+import 'reflect-metadata';
+
 import { writeFile, readFile, rm } from 'node:fs/promises';
 import { Buffer } from 'node:buffer';
 
-import { checkAndRecreateUploadDir, createBotWithToken, getFileName, setEnvMode } from './utils';
-import { FILE_EXTENSIONS } from './consts';
+import {checkAndRecreateUploadDir, createBotWithToken, getFileName, setEnvMode} from './utils';
+import {FILE_EXTENSIONS} from './consts';
+
+import {User} from "./db/entity/User";
+import {createAppDataSource} from "./db/createAppDataSource";
 
 setEnvMode()
 
@@ -56,8 +61,18 @@ bot.on('voice', async ctx => {
 
 bot.launch(async () => {
   console.log(
-    'Bot started'
+    'Bot started...'
   );
 
   checkAndRecreateUploadDir()
+
+  const AppDataSource = createAppDataSource([User])
+
+  try {
+    await AppDataSource.initialize();
+
+    User.find().then(users => console.log(users))
+  } catch (e) {
+    console.log(e)
+  }
 });
